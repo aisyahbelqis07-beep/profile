@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel = "stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Formulir Pendaftaran</h1>
+
+    <form id="myForm" onsubmit="return validateForm()">
+        <div>
+            <label for="nama">Nama:</label><br>
+            <input type="text" id="nama" name="nama" required><br><br>
+        </div>
+
+        <div>
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+        </div>
+
+        <div>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br>
+            <p id="passwordError" style="color: red; display: none; font-size: small;">Password minimal 8 karakter.</p>
+            <br>
+        </div>
+
+        <button type="submit">Kirim</button>
+    </form>
+
+    <script>
+        function validateForm() {
+            const nama = document.getElementById('nama').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const passwordError = document.getElementById('passwordError');
+            let isValid = true;
+
+            // 1. Pastikan semua input telah diisi (Validasi Kosong)
+            // HTML `required` sudah membantu, tapi JS menguatkan
+            if (nama === '' || email === '' || password === '') {
+                alert('Semua kolom harus diisi.');
+                isValid = false;
+            }
+
+            // 2. Validasi Email agar berformat standar (nama@domain.com)
+            // Regex sederhana: [teks]@[teks].[2+ karakter]
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+            if (!emailPattern.test(email)) {
+                alert('Format email tidak valid (misal: nama@domain.com).');
+                isValid = false;
+            }
+
+            // 3. Pastikan password memiliki minimal 8 karakter
+            if (password.length < 8) {
+                passwordError.style.display = 'block'; // Tampilkan pesan error
+                isValid = false;
+            } else {
+                passwordError.style.display = 'none'; // Sembunyikan pesan error
+            }
+
+            // Jika semua validasi berhasil
+            if (isValid) {
+                alert('Formulir berhasil divalidasi dan siap dikirim!');
+                // Mengembalikan false untuk mencegah refresh halaman/pengiriman sebenarnya
+                return false;
+            } else {
+                // Mencegah pengiriman formulir jika ada validasi yang gagal
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
